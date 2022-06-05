@@ -24,16 +24,16 @@ __build__ = "20220605"
 
 
 def tgsend(message):
+    headers = {'Accept': 'application/json'}
     url = BASEURL + 'bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message
     response = requests.post(url = url, headers = headers)
-    print('TG_WRITE', url)
+
 
 def main():
     # Initialization
-    #LASTHOUR = time.asctime()[4:13]  # E.g.: 'Jun  5 11'
-    LASTHOUR = 'Jun  5 11'
+    LASTHOUR = time.asctime()[4:13]  # E.g.: 'Jun  5 11'
+#    LASTHOUR = 'Jun  5 11'
     BADGUY = 'Invalid'
-    headers = {'Accept': 'application/json'}
 
     try:
         # Parses LOGFILE within LASTHOUR
@@ -41,14 +41,15 @@ def main():
         # Searches the above output for BADGUY
         grep2 = subprocess.check_output(['grep', BADGUY], stdin = grep1.stdout)
         count = len(grep2.splitlines())
-        print('TRY1')
         print(f'[!] {count} unauthorized access attempts in the last hour')
-        print(str(count) + ' unauthorized access attempts in the last hour')
-        tgsend('Hello')
-        print('TRY2')
+        msg1 = str(count) + ' unauthorized'
     except:
         print('[+] No access attempts in the last hour')
-        print('EXCEPT')
+        msg1 = 'No'
+
+    msg2 = ' access attempts in the last hour'
+    tgsend(msg1 + msg2)
+
 
 # Main function
 if __name__ == '__main__':
