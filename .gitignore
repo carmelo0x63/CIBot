@@ -109,6 +109,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+bin/
+lib64
+pyvenv.cfg
 
 # Spyder project settings
 .spyderproject
@@ -127,3 +130,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Bearer token
+*_config.json
+*_config.json.0
+
+*.json
+_archive/
+.DS_Store
+*.html
