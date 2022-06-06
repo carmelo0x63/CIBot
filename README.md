@@ -49,3 +49,9 @@ $ docker run \
     <repository>/<image>:<tag>
 ```
 
+### Run through crontab
+At minute `0` every hour:
+```
+0 * * * *  (cd /path/to/CIBot; /usr/bin/docker run -d --rm -v /var/log:/var/log:ro <repository>/<image>:<tag>)
+```
+
