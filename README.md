@@ -26,7 +26,7 @@ $ source bin/activate
 ```
 {"BOT": "<somename_bot>", "TOKEN": "<long string>", "CHATID": "<decimal number>"}
 ```
-*NOTE*: details can be found on [Bots: An introduction for developers](https://core.telegram.org/bots)</br>
+**NOTE**: details can be found on [Bots: An introduction for developers](https://core.telegram.org/bots)</br>
 
 3. Check
 A quick run of the main script would do:
@@ -38,11 +38,11 @@ If everything has been setup correctly, according to the instructions to be foun
 ### Build Docker container
 This part is optional but no README would be complete without the containerization section:
 ```
-docker build -t <repository>/<image>:<tag> .
+$ docker build -t <repository>/<image>:<tag> .
 
-docker push <repository>/<image>:<tag>
+$ docker push <repository>/<image>:<tag>
 
-docker run \
+$ docker run \
     --detach \
     --rm \
     --volume /var/log:/var/log:ro \
