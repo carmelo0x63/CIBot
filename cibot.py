@@ -9,8 +9,7 @@
 # Import some modules
 import json                                   # JSON encoder and decoder
 import logging                                # Logging facility for Python
-import logging.handlers
-from logging.handlers import SysLogHandler
+import os                                     # Miscellaneous operating system interfaces
 import requests                               # Python HTTP for Humans
 import subprocess                             # Subprocess management
 import time                                   # Time access and conversions
@@ -51,11 +50,8 @@ def tgSend(message, token, chatid):
 
 
 def main():
-    # Initialization
-    logger = logging.getLogger('cilogger')
-    logger.setLevel(logging.INFO)
-    handler = logging.handlers.SysLogHandler(facility = SysLogHandler.LOG_DAEMON, address = '/dev/log')
-    logger.addHandler(handler)
+    # Initialization, cibot.log shall be stored in the same directory
+    logging.basicConfig(filename = 'cibot.log', level = logging.INFO)
 
     LASTHOUR = time.asctime()[4:13]  # E.g.: 'Jun  5 11'
 #    LASTHOUR = 'Jun  5 11'
@@ -77,12 +73,11 @@ def main():
         pass
 
     if count:
-        logger.info(f'[!] CIBot: {count} unauthorized' + msg2)
+        logging.info(f'[!] {os.path.basename(__file__)}: {count} unauthorized' + msg2)
         msg1 = str(count) + ' unauthorized'
         tgSend(msg1 + msg2, token, chatid)
     else:
-        logger.info('[+] CIBot: No' + msg2)
-
+        logging.info(f'[+] {os.path.basename(__file__)}: No' + msg2)
 
 # Main function
 if __name__ == '__main__':

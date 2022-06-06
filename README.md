@@ -46,12 +46,13 @@ $ docker run \
     --detach \
     --rm \
     --volume /var/log:/var/log:ro \
+    --volume -v $PWD:/usr/local/bin \
     <repository>/<image>:<tag>
 ```
 
 ### Run through crontab
 At minute `0` every hour:
 ```
-0 * * * *  (cd /path/to/CIBot; /usr/bin/docker run -d --rm -v /var/log:/var/log:ro <repository>/<image>:<tag>)
+0 * * * *  (cd /path/to/CIBot; /usr/bin/docker run -d --rm -v /var/log:/var/log:ro -v $PWD:/usr/local/bin <repository>/<image>:<tag>)
 ```
 
