@@ -61,24 +61,27 @@ def main():
 #    LASTHOUR = 'Jun  5 11'
     BADGUY = 'Invalid'
     config = readConf()
+#    bot = config['BOT']
+    token = config['TOKEN']
+    chatid = config['CHATID']
+    count = 0
+    msg2 = ' access attempts in the last hour'
 
     try:
         # Parses LOGFILE within LASTHOUR
         grep1 = subprocess.Popen(['grep', LASTHOUR, LOGFILE], stdout = subprocess.PIPE)
-        # Searches the above output for BADGUY
+        # Searches the above output for BADGUY then counts the number of lines
         grep2 = subprocess.check_output(['grep', BADGUY], stdin = grep1.stdout)
         count = len(grep2.splitlines())
-        logger.info(f'[!] {count} unauthorized access attempts in the last hour')
-        msg1 = str(count) + ' unauthorized'
     except:
-        logger.info('[+] No access attempts in the last hour')
-        msg1 = 'No'
+        pass
 
-    msg2 = ' access attempts in the last hour'
-#    bot = config['BOT']
-    token = config['TOKEN']
-    chatid = config['CHATID']
-    tgSend(msg1 + msg2, token, chatid)
+    if count:
+        logger.info(f'[!] CIBot: {count} unauthorized' + msg2)
+        msg1 = str(count) + ' unauthorized'
+        tgSend(msg1 + msg2, token, chatid)
+    else:
+        logger.info('[+] CIBot: No' + msg2)
 
 
 # Main function
