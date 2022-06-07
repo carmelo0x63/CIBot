@@ -51,8 +51,8 @@ $ docker run \
 ```
 
 ### Run through crontab
-At minute `0` every hour:
+At minute `59` every hour:
 ```
-0 * * * *  (cd /path/to/CIBot; /usr/bin/docker run -d --rm -v /var/log:/var/log:ro -v $PWD:/usr/local/bin <repository>/<image>:<tag>)
+59 * * * *  (cd /path/to/CIBot; /usr/bin/docker run -d --rm -v /var/log:/var/log:ro -v $PWD:/usr/local/bin <repository>/<image>:<tag>)
 ```
 
