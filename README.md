@@ -9,9 +9,9 @@ Security is an active exercise, you need to:
 3. apply it
 4. make sure it is constantly applied/monitor
 
-Regarding `#2` above, you may want to read a guide:
-a. [How To Harden OpenSSH on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-harden-openssh-on-ubuntu-20-04): just an example, the article focuses on Ubuntu but it is applicable to other distros with minor, if any, modifications
-b. install [Fail2Ban](https://www.fail2ban.org/)
+Regarding `#2` above, you may want to read a guide:</br>
+a. [How To Harden OpenSSH on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-harden-openssh-on-ubuntu-20-04): just an example, the article focuses on Ubuntu but it is applicable to other distros with minor, if any, modifications</br>
+b. install [Fail2Ban](https://www.fail2ban.org/)</br>
 
 OK, now you're good to go and read the rest :)
  
