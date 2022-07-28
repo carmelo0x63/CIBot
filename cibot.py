@@ -3,6 +3,7 @@
 # author: Carmelo C
 # email: carmelo.califano@gmail.com
 # history, date format ISO 8601:
+#  2022-07-28 2.0 Added a summary of the offending IPs
 #  2022-07-27 1.2 Small refactoring, moved len(...) to separate function, countLines()
 #  2022-06-06 1.1 Replaced plain print statements with logging module
 #  2022-06-05 1.0 Initial version
@@ -11,6 +12,7 @@
 import json           # JSON encoder and decoder
 import logging        # Logging facility for Python
 import os             # Miscellaneous operating system interfaces
+import re             # Regular expression operations
 import requests       # Python HTTP for Humans
 import subprocess     # Subprocess management
 import time           # Time access and conversions
@@ -21,8 +23,8 @@ BASEURL = 'https://api.telegram.org/'
 LOGFILE = '/var/log/auth.log'
 
 # Version info
-__version__ = "1.2"
-__build__ = "20220727"
+__version__ = "2.0"
+__build__ = "20220728"
 
 
 def readConf():
@@ -54,6 +56,14 @@ def countLines(string):
     return len(string.splitlines())
 
 
+def groupIPs(string):
+    match1 = re.findall(r'from\b.+\bport', string.decode('utf-8'))
+    match2 = [m.lstrip('from ').rstrip(' port') for m in match1]
+    res = {}
+    for ip_addr in match2:
+        res[i] = match2.count(ip_addr)
+    return res
+
 def main():
     # Initialization, cibot.log shall be stored in the same directory
     logging.basicConfig(filename = 'cibot.log', level = logging.INFO)
@@ -69,17 +79,17 @@ def main():
 
     try:
         # Parses LOGFILE within LASTHOUR, sends to PIPE
-        grep1 = subprocess.Popen(['grep', LASTHOUR, LOGFILE], stdout = subprocess.PIPE)
+        filtered_auth_temp = subprocess.Popen(['grep', LASTHOUR, LOGFILE], stdout = subprocess.PIPE)
         # Reads from PIPE to search for BADGUY
-        grep2 = subprocess.check_output(['grep', BADGUY], stdin = grep1.stdout)
+        filtered_auth = subprocess.check_output(['grep', BADGUY], stdin = filtered_auth_temp.stdout)
 
         # Eventually, we'll get an output that only shows the interesting lines:
         # b'<timestamp> <hostname> sshd[12786]: Invalid user <attacker> from <ip_address> port <portN>\n ..."
         # the type will be 'bytes'
 
         # Finally the output will be split based on newline ('\n') characters
-#        count = len(grep2.splitlines())
-        count = countLines(grep2)
+        count = countLines(filtered_auth)
+        ip_list = groupIPs(filtered_auth)
     except:
         pass
 
@@ -87,6 +97,7 @@ def main():
         logging.info(f'[!] {os.path.basename(__file__)}: {count} unauthorized' + msg2)
         msg1 = str(count) + ' unauthorized'
         tgSend(msg1 + msg2, token, chatid)
+        tgSend(ip_list, token, chatid)
     else:
         logging.info(f'[+] {os.path.basename(__file__)}: No' + msg2)
 
