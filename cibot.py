@@ -61,7 +61,7 @@ def groupIPs(string):
     match2 = [m.lstrip('from ').rstrip(' port') for m in match1]
     res = {}
     for ip_addr in match2:
-        res[i] = match2.count(ip_addr)
+        res[ip_addr] = match2.count(ip_addr)
     return res
 
 def main():
@@ -97,7 +97,7 @@ def main():
         logging.info(f'[!] {os.path.basename(__file__)}: {count} unauthorized' + msg2)
         msg1 = str(count) + ' unauthorized'
         tgSend(msg1 + msg2, token, chatid)
-        tgSend(ip_list, token, chatid)
+        tgSend(str(ip_list), token, chatid)
     else:
         logging.info(f'[+] {os.path.basename(__file__)}: No' + msg2)
 
